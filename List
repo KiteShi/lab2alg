@@ -1,0 +1,139 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace lab2
+{
+    class List
+    {
+        public string info;
+        public List tail;
+
+        public List(string info)
+        {
+            this.info = info;
+            tail = null;
+        }
+
+        public List(List l)
+        {
+            info = l.info;
+            tail = l.tail;
+        }
+
+        public List(string info, List tail)
+        {
+            this.info = info;
+            this.tail = tail;
+        }
+
+        public int Length
+        {
+            get
+            {
+                List t = new List(this);
+                int len = 1;
+                while(t.tail != null)
+                {
+                    len++;
+                    t.info = t.tail.info;
+                    t.tail = t.tail.tail;
+                }
+                return len;
+            }
+        }
+
+        public void Print()
+        {
+            List t = new List(this);
+            Console.WriteLine(t.info);
+            while(t.tail != null)
+            {
+                t.info = t.tail.info;
+                t.tail = t.tail.tail;
+                Console.WriteLine(t.info);
+            }
+        }
+
+        public void AddFirst(string a)
+        {
+            List t = new List(this);
+            info = a;
+            tail = t;
+        }
+
+        public void AddLast(string a)
+        {
+            if (tail == null)
+            {
+                tail = new List(a);
+            }
+            else tail.AddLast(a);
+        }
+
+        public void AddAfter(string add, string inf)
+        {
+            if (info == inf)
+            {
+                tail = new List(add, tail);
+            }
+            else tail.AddAfter(add, inf);
+        }
+
+        public void Delete(string w)
+        {
+            if (tail.info == w)
+            {
+                tail = tail.tail;
+            }
+            else if (info == w)
+            {
+                info = tail.info;
+                tail = tail.tail;
+            }
+            else tail.Delete(w);
+        }
+
+        public int Search(string s)
+        {
+            List t = this;
+            int i = 0;
+            if (t.info == s) return i;
+            bool check = false;
+            while (t.tail != null && t.info != s)
+            {
+                i++;
+                t.info = t.tail.info;
+                t.tail = t.tail.tail;
+                if (t.info == s) check = true;
+            }
+            if (check == true) return i;
+            return -1;
+        }
+
+        public void Swap(string first, string second)
+        {
+            List t = new List(this);
+            string temp1 = "";
+            string temp2 = "";
+            while (t.tail != null)
+            {
+                if (t.tail.info == first) temp1 = t.info;
+                else if (t.tail.info == second) temp2 = t.info;
+                t.info = t.tail.info;
+                t.tail = t.tail.tail;
+            }
+
+            this.Delete(first);
+            this.Delete(second);
+            if (temp1 == "") this.AddFirst(second);
+            else this.AddAfter(second, temp1);
+            if (temp2 == "") this.AddFirst(first);
+            else this.AddAfter(first, temp2);
+
+
+        }
+    }
+}
