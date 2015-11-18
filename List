@@ -59,9 +59,8 @@ namespace lab2
 
         public void AddFirst(string a)
         {
-            List t = new List(this);
+            tail = new List(info, tail);
             info = a;
-            tail = t;
         }
 
         public void AddLast(string a)
