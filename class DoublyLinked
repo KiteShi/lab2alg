@@ -1,0 +1,90 @@
+namespace lab2
+{
+    class DoublyLinked
+    {
+        public string info;
+        public DoublyLinked next;
+        public DoublyLinked prev;
+
+        public DoublyLinked(string a)
+        {
+            prev = null;
+            info = a;
+            next = null;
+        }
+
+        public DoublyLinked(DoublyLinked p, string a, DoublyLinked n)
+        {
+            prev = p;
+            info = a;
+            next = n;
+        }
+
+        public void Print()
+        {
+            DoublyLinked temp = new DoublyLinked(prev, info, next);
+            Console.WriteLine(temp.info);
+            while (temp.next != null)
+            {
+                temp.info = temp.next.info;
+                temp.next = temp.next.next;
+                Console.WriteLine(temp.info);
+            }
+        }
+
+        public void AddFirst(string f)
+        {
+            next = new DoublyLinked(this, info, next);
+            info = f;
+        }
+
+        public void AddLast(string l)
+        {
+            if (next == null)
+            {
+                next = new DoublyLinked(this, l, null);
+            }
+            else next.AddLast(l);
+        }
+
+        public void AddAfter(string add, string inf)
+        {
+            if (info == inf)
+            {
+                next = new DoublyLinked(prev, add, next);
+            }
+            else next.AddAfter(add, inf);
+        }
+
+        public void Delete(string w)
+        {
+            if (next.info == w)
+            {
+                next = next.next;
+            }
+            else if (info == w)
+            {
+                info = next.info;
+                next = next.next;
+            }
+            else next.Delete(w);
+        }
+
+        public int Search(string s)
+        {
+            DoublyLinked temp = new DoublyLinked(prev, info, next);
+            int i = 0;
+            if (temp.info == s) return i;
+            bool check = false;
+            while (temp.next != null && temp.info != s)
+            {
+                i++;
+                temp.info = temp.next.info;
+                temp.next = temp.next.next;
+                if (temp.info == s) check = true;
+            }
+            if (check == true) return i;
+            return -1;
+        }
+    }
+}
